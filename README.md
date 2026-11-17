@@ -6,23 +6,27 @@ The subject is in **[TP5.pdf](TP5.pdf)**. Read it first.
 
 ## Getting started
 
-This repository is a **template**: you cannot push to it. Create your own copy first:
-
-1. Click **Use this template → Create a new repository** (top of this page) and create it under your account, e.g. `DL2-TP5`.
-2. Clone **your** repository:
+1. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and the [GitHub CLI](https://cli.github.com) `gh`:
+   - Windows: `winget install GitHub.cli`
+   - macOS: `brew install gh`
+   - Linux: `sudo apt install gh` (on older distributions, see [cli.github.com](https://cli.github.com))
+2. Log in once (a browser window opens). GitHub does not accept your password for `git push`; after this, no password is needed:
    ```bash
-   git clone https://github.com/<your-username>/DL2-TP5.git
+   gh auth login
+   ```
+3. This repository is a **template**: you cannot push to it. Create your own copy and clone it:
+   ```bash
+   gh repo create DL2-TP5 --template matteo-st/DL2-TP5 --private --clone
    cd DL2-TP5
    ```
-3. Set up the environment with one of the files in `config/`:
+   Alternatively, click **Use this template → Create a new repository** at the top of this page, then `git clone https://github.com/<your-username>/DL2-TP5.git`.
+4. Set up the environment with one of the files in `config/`:
    ```bash
    # conda
    conda env create -f config/environment.yml
    # or pip / virtualenv
    pip install -r config/requirements.txt
    ```
-
-GitHub does not accept your password for `git push`: authenticate once with `gh auth login` (GitHub CLI), a personal access token, or an SSH key.
 
 ## Files
 
