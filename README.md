@@ -6,7 +6,7 @@ The subject is in **[TP5.pdf](TP5.pdf)**. Read it first.
 
 ## Getting started
 
-1. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and the [GitHub CLI](https://cli.github.com) `gh`:
+1. Install [Git](https://git-scm.com/downloads) and the [GitHub CLI](https://cli.github.com) `gh`:
    - Windows: `winget install GitHub.cli`
    - macOS: `brew install gh`
    - Linux: `sudo apt install gh` (on older distributions, see [cli.github.com](https://cli.github.com))
