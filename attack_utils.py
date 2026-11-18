@@ -76,7 +76,7 @@ class ProjectedGradientDescent:
 
     def compute(self, x, y):
         """
-        Generates an adversarial perturbation using PGD with L2 norm.
+        Generates an adversarial perturbation using PGD with L-infinity norm.
 
         Args:
             x (torch.Tensor): Original input images.

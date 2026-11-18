@@ -20,7 +20,7 @@ def main(args):
 
     args.path = os.path.join('experiments', args.path)
     if os.path.exists(args.path):
-        print(f'Deleating the existing folder {args.path}')
+        print(f'Deleting the existing folder {args.path}')
         shutil.rmtree(args.path)
     os.makedirs(args.path, exist_ok=True)
     print(f'Experiments will be saved in {args.path}')

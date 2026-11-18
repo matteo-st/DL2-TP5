@@ -1,4 +1,5 @@
 import torch
+import torchvision
 from torch import nn
 
 
@@ -26,7 +27,8 @@ class CNN(nn.Module):
 class ResNet18(nn.Module):
     def __init__(self):
         super(ResNet18, self).__init__()
-        self.resnet = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
+        # ResNet18 pre-trained on ImageNet (weights are downloaded the first time)
+        self.resnet = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.DEFAULT)
         ## To do 7
         # self.resnet.fc = 
 

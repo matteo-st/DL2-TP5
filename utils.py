@@ -39,6 +39,7 @@ def get_optimizer(model, lr, optimizer):
 
 
 def train_iter(model, optimizer, x, y, device):
+    model.train()
     x, y = x.to(device), y.to(device)
     optimizer.zero_grad()
     output = model(x)
@@ -50,16 +51,19 @@ def train_iter(model, optimizer, x, y, device):
 
 
 def test_model(model, test_loader, device, attack=None):
+    model.eval()
     losses = []
     n_correct = 0
     n_samples = 0
     for i, (x, y) in enumerate(tqdm.tqdm(test_loader, leave=False)):
         x, y = x.to(device), y.to(device)
         if attack is not None:
+            # the attack needs gradients, so it is computed outside of torch.no_grad()
             delta = attack.compute(x, y)
             x = torch.clamp(x + delta, 0, 1)
-        output = model(x)
-        loss = nn.CrossEntropyLoss()(output, y)
+        with torch.no_grad():
+            output = model(x)
+            loss = nn.CrossEntropyLoss()(output, y)
         losses.append(loss.item())
         n_correct += (output.argmax(1) == y).sum().item()
         n_samples += y.size(0)
@@ -69,12 +73,12 @@ def test_model(model, test_loader, device, attack=None):
 def plot_results(losses_train, losses_test, acc_train, acc_test, args):
     plt.figure(figsize=(10, 5))
 
-    best_ecoch = np.argmin(losses_test) 
+    best_epoch = np.argmin(losses_test) 
     plt.subplot(1, 2, 1)
     plt.plot(np.arange(len(losses_train))/len(losses_train)*(len(losses_test)-1),           
                         losses_train, label='Train')
     plt.plot(losses_test, label='Test')
-    plt.plot([best_ecoch], [losses_test[best_ecoch]], color='red', label='Best test loss', marker='o')
+    plt.plot([best_epoch], [losses_test[best_epoch]], color='red', label='Best test loss', marker='o')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
@@ -82,15 +86,17 @@ def plot_results(losses_train, losses_test, acc_train, acc_test, args):
     plt.plot(np.arange(len(acc_train))/len(acc_train)*(len(acc_test)-1),           
                         acc_train, label='Train')
     plt.plot(acc_test, label='Test')
-    plt.plot([best_ecoch], [acc_test[best_ecoch]], color='red', label='Best test accuracy', marker='o')
+    plt.plot([best_epoch], [acc_test[best_epoch]], color='red', label='Best test accuracy', marker='o')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.legend()
     plt.tight_layout()
     plt.savefig(os.path.join(args.path, 'results.png'))
+    plt.close()
 
 
 def visualize_results(x, y, model, device, args, attack=None):
+    model.eval()
     x, y = x.to(device), y.to(device)
     if attack is not None:
         delta = attack.compute(x, y)
@@ -107,10 +113,10 @@ def visualize_results(x, y, model, device, args, attack=None):
             title = ax[i][j].set_title("Pred: {}".format(cifar10_classes[int(y_pred[i*5+j])]))
             plt.setp(title, color=('g' if y_pred[i*5+j] == y[i*5+j] else 'r'))
             ax[i][j].set_axis_off()
-        plt.tight_layout()
+    plt.tight_layout()
     if attack is not None:
         plt.savefig(os.path.join(args.path, f'examples_{attack.name}.png'))
     else:
         plt.savefig(os.path.join(args.path, 'examples.png'))
-    plt.show()
+    plt.close(f)
     
