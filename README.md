@@ -16,9 +16,11 @@ The subject is in **[TP5.pdf](TP5.pdf)**. Read it first.
    ```
 3. This repository is a **template**: you cannot push to it. Create your own copy and clone it:
    ```bash
-   gh repo create DL2-TP5 --template matteo-st/DL2-TP5 --private --clone
+   gh repo create DL2-TP5 --template matteo-st/DL2-TP5 --private
+   gh repo clone DL2-TP5
    cd DL2-TP5
    ```
+   GitHub needs a few seconds to copy the template: if the clone fails with `couldn't find remote ref`, wait a few seconds and run `gh repo clone DL2-TP5` again.
    Alternatively, click **Use this template → Create a new repository** at the top of this page, then `git clone https://github.com/<your-username>/DL2-TP5.git`.
 4. Set up the environment with one of the files in `config/`:
    ```bash
